@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acme</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        #loading {
+            display: none;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido al procesador de PDF más popular</h1>
+
+        <form id="processForm" >
+            <label for="num_threads">Digita el número de hilos:</label>
+            <input type="number" id="num_threads" name="num_threads" min="1" required>
+            <br><br>
+            <button type="submit">Procesar archivos</button>
+        </form>
+
+        <div id="loading">Cargando...</div>
+
+        <div class="result">
+            <p><strong>Mensaje:</strong> <span id="message">-</span></p>
+            <p><strong>Tiempo Tomado:</strong> <span id="time">-</span></p>
+        </div>
+
+        <div>
+            <a href="/results-page">Ver resultados</a>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('processForm').addEventListener('submit', async function(event) {
+            event.preventDefault();  // Evitar el envío del formulario tradicional
+
+            // Mostrar mensaje de carga
+            document.getElementById('loading').style.display = 'block';
+
+            const numThreads = document.getElementById('num_threads').value;
+            const response = await fetch(`/api/process_files?num_threads=${numThreads}`);
+            const data = await response.json();
+
+            // Ocultar mensaje de carga
+            document.getElementById('loading').style.display = 'none';
+
+            // Mostrar los resultados en la página
+            document.getElementById('message').textContent = data.mensaje;
+            document.getElementById('time').textContent = data.tiempo_tomado;
+        });
+    </script>
+</body>
+</html>

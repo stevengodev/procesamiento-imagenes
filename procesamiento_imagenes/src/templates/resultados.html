@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <script>
+        async function fetchResults() {
+            try {
+                const response = await fetch('/api/results');
+                const data = await response.json();
+                
+                document.getElementById('num_files_processed').textContent = data.num_files_processed;
+                document.getElementById('ocr_total_time').textContent = data.ocr_total_time + " segundos";
+                document.getElementById('ocr_average_time').textContent = data.ocr_average_time + " segundos";
+                document.getElementById('ai_total_time').textContent = data.ai_total_time + " segundos";
+                document.getElementById('ai_average_time').textContent = data.ai_average_time + " segundos";
+            } catch (error) {
+                console.error('Error fetching results:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            fetchResults();
+        });
+    </script>
+</head>
+<body>
+    <h1>Resultados</h1>
+    <ul>
+        <li>Numero de archivos procesados: <span id="num_files_processed">Loading...</span></li>
+        <li>Tiempo total de procesamiento por el OCR: <span id="ocr_total_time">Loading...</span></li>
+        <li>Tiempo promedio de procesamiento por el OCR: <span id="ocr_average_time">Loading...</span></li>
+        <li>Tiempo total de procesamiento por la IA: <span id="ai_total_time">Loading...</span></li>
+        <li>Tiempo promedio de procesamiento por la IA: <span id="ai_average_time">Loading...</span></li>
+    </ul>
+    <a href="/home">Volver</a>
+</body>
+</html>
